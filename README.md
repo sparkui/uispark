@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Uispark
 
 This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.0.0-beta.6.
@@ -29,3 +30,6 @@ Run `ng github-pages:deploy` to deploy to Github Pages.
 ## Further help
 
 To get more help on the `angular-cli` use `ng --help` or go check out the [Angular-CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+=======
+# uispark
+>>>>>>> 9c1b40abeba09cd35bc2de657bc09e9a19727f40
