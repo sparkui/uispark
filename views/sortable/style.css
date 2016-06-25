@@ -1,0 +1,17 @@
+#sortable {
+    position: relative;
+}
+ul {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+}
+li {
+    height: 30px;
+    border: 1px solid #ddd;
+    background-color: white;
+    cursor: move;
+    width: 200px;
+    line-height: 30px;
+    padding-left: 15px;
+}
