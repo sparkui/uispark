@@ -40,6 +40,7 @@ header {
 
 .sections {
 	margin-top: 50px;
+	/* height: calc(100vh - 50px); */
 }
 
 .section {

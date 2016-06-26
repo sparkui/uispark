@@ -1,7 +1,13 @@
-angular.module('demo', ['ngRoute']).controller('DemoController', function($scope, $location, codeService) {
+angular.module('demo', ['ngRoute']).controller('DemoController', function($scope, $location, $anchorScroll, codeService) {
 
   $scope.demoList = window.demoList;
+  $scope.demoMap = {};
 
+  $scope.scrollToDemo = function(name){
+    console.log('component-' + name);
+    $location.hash('component-' + name);
+    $anchorScroll();
+  };
   $scope.viewDemo = function(name) {
     if (name !== 'default') $location.path(name);
 
@@ -10,20 +16,18 @@ angular.module('demo', ['ngRoute']).controller('DemoController', function($scope
     var jsPath = demoFolder + name + '/script.js';
     var cssPath = demoFolder + name + '/style.css';
 
-    $scope.viewName = name;
+    if(!$scope.demoMap[name]) $scope.demoMap[name] = {};
+    $scope.demoMap[name].viewName = name;
 
-    $scope.codeViewing = false;
+    $scope.demoMap[name].codeViewing = false;
 
-    $scope.currentUrl = htmlPath;
-    $scope.currentTab = 0;
+    $scope.demoMap[name].currentUrl = htmlPath;
+    $scope.demoMap[name].currentTab = 0;
 
-    $scope.htmlCode = undefined;
-    $scope.jsCode = undefined;
-    $scope.cssCode = undefined;
 
     var renderCode = function() {
       setTimeout(function() {
-        var pres = document.querySelectorAll('.code-contents pre');
+        var pres = document.querySelectorAll('#codeview' + name + ' .code-contents pre');
         [].forEach.call(pres, function(pre) {
           Prism.highlightElement(pre);
         });
@@ -32,19 +36,19 @@ angular.module('demo', ['ngRoute']).controller('DemoController', function($scope
 
     codeService.getCode(htmlPath)
       .then(function(result) {
-        $scope.htmlCode = result.data;
+        $scope.demoMap[name].htmlCode = result.data;
         return codeService.getCode(jsPath);
       }, function() {
         return codeService.getCode(jsPath);
       })
       .then(function(result) {
-        $scope.jsCode = result.data;
+        $scope.demoMap[name].jsCode = result.data;
         return codeService.getCode(cssPath);
       }, function() {
         return codeService.getCode(cssPath);
       })
       .then(function(result) {
-        $scope.cssCode = result.data;
+        $scope.demoMap[name].cssCode = result.data;
         renderCode();
       }, function() {
         renderCode();
@@ -55,57 +59,29 @@ angular.module('demo', ['ngRoute']).controller('DemoController', function($scope
     $scope.codeViewing = !$scope.codeViewing;
   };
 
-  $scope.switchTab = function(index) {
-    $scope.currentTab = index;
+  $scope.switchTab = function(name,index) {
+    $scope.demoMap[name].currentTab = index;
   };
-
-  var name = $location.path().replace(/^\//, '');
-  if ($scope.demoList.indexOf(name) > -1) {
-    $scope.viewDemo(name);
-  } else {
-    $location.path('/');
-    $scope.viewDemo('default');
-  }
-
 }).factory('codeService', function($http) {
   return {
     getCode: function(path) {
       return $http.get(path);
     }
   }
-});
-
-document.addEventListener('DOMContentLoaded', function() {
-  var calcHeight = function() {
-    var headerHeight = 40;
-    var viewerBarHeight = 50;
-    var viewerTabHeight = 40;
-    var bottomMargin = 20;
-    var sectionHeight = window.innerHeight - headerHeight - bottomMargin;
-    var pageFrameHeight = sectionHeight - viewerBarHeight;
-    var codeContentsHeight = sectionHeight - viewerBarHeight - viewerTabHeight;
-
-    var setHeight = function(selector, height) {
-      document.querySelector(selector).style.height = height + 'px';
-    };
-
-    setHeight('section', sectionHeight);
-    setHeight('section iframe', pageFrameHeight);
-    setHeight('.code-contents', codeContentsHeight);
-  };
-
-  calcHeight();
-
-  var delayEvent = function(func, delayTime) {
-    var timer;
-    return function(e) {
-      clearTimeout(timer);
-      timer = setTimeout(function() {
-        func(e);
-      }, delayTime);
+}).directive('iframeHeight', function(){
+  return function(scope, $element, attrs){
+    if(attrs.height === 'auto'){
+      var iframe = angular.element($element)[0];
+      iframe.onload = function(){
+        try{
+        var bHeight = iframe.contentWindow.document.body.scrollHeight;
+        var dHeight = iframe.contentWindow.document.documentElement.scrollHeight;
+        var height = Math.max(bHeight, dHeight) + 20;
+        iframe.height = height;
+        }catch (ex){
+          console.error(ex);
+        }
+      };
     }
   };
-
-  window.addEventListener('resize', delayEvent(calcHeight, 300));
-
-}, false);
+});

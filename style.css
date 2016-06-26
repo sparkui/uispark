@@ -20,29 +20,45 @@ header {
   max-width: 1280px;
   height: 40px;
   margin: 0 auto;
-  background-color: #FAFAFA;
+  text-align: center;
+  margin: 20px;
 }
 
-header h2 {
-  height: 40px;
-  line-height: 40px;
-  margin-left: 15px;
+.band{
+  border-bottom: 1px solid #aaa;
+}
+#logo {
+  display: inline-block;
   color: #00B38A;
+  padding: 10px;
+  text-decoration: none;
+  &:hover{
+    text-decoration:none;
+  }
 }
 
+.hero{
+  height: 200px;
+  background-color: #00bfa5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  text-align: center;
+  line-height: 70px;
+}
 section {
   width: 99%;
   max-width: 1280px;
   margin: 0 auto;
-  border: 1px solid #ddd;
-  border-top: none;
 }
 
 section nav {
-  float: left;
+  float: right;
   width: 20%;
   height: 100%;
-  border-right: 1px solid #ddd;
+  padding: 20px;
 }
 
 section nav .filter {
@@ -69,28 +85,17 @@ section nav ul {
 
 section nav li {
   font-size: 20px;
-  height: 2em;
-  line-height: 2em;
+  height: 1.5em;
   cursor: pointer;
-  border-top: 1px solid #ddd;
   padding-left: 15px;
 }
-section nav li:last-child {
-  border-bottom: 1px solid #ddd;
-}
 section nav li:hover {
-  background-color: #FAFAFA;
+  color: #666;
 }
 section nav li.active {
-  background-color: #EBF0EF;
+  color: #666;
 }
 
-section aside {
-  margin-left: 20%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
 
 section aside .toolbar {
   height: 50px;
@@ -110,6 +115,12 @@ section aside .toolbar .view-btn {
   height: 40px;
   background: url(img/view.svg) 50% 50% no-repeat;
   cursor: pointer;
+}
+
+section aside {
+  margin-right: calc(20% + 50px);
+  padding: 20px;
+  border: 1px solid #eee;
 }
 
 section aside .tabs {
@@ -148,6 +159,28 @@ section aside .code-contents pre {
 
 section aside iframe {
   width: 100%;
-  height: auto;
   border: none;
 }
+
+
+#logo{
+  width: 100%;
+}
+
+
+.page-header {
+    padding-bottom: 9px;
+    margin: 40px 0 20px;
+    border-bottom: 1px solid #eee;
+  }
+
+  iframe{
+    width: 100%;
+    /* height: 500px; */
+    border: none;
+  }
+
+  .demo-title{
+    padding-bottom: 9px;
+    margin: 20px 0 20px;
+  }

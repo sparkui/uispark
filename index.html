@@ -5,39 +5,47 @@
     <link rel="stylesheet" type="text/css" href="lib/prism.css"/>
   </head>
   <body ng-app="demo" ng-controller="DemoController">
-    <header>
-      <h2>UI Spark</h2>
-    </header>
     <section class="clearfix">
       <nav>
-        <div class="filter">
-            <input type="input" ng-model="query" placeholder="type in keywords to filter"/>
+        <div class="band">
+          <a id="logo" href="/"> UISpark </a>
         </div>
         <ul>
           <li ng-repeat="item in demoList | filter:query"
-              ng-click="viewDemo(item)"
-              ng-class="{active: item == viewName}"
-              ng-bind="item"></li>
+              ng-click="scrollToDemo(item.name)"
+              ng-class="{active: item.name == viewName}"
+              ng-bind="item.name"></li>
         </ul>
       </nav>
       <aside>
-        <div class="toolbar">
-          <span>Demo Instance</span>
-          <div class="view-btn" ng-click="toggleCodeViewer()" title="source code"></div>
+        <div class="hero">
+            <span><span class="logo">UISpark</span> <br/> <em>Delivers anything you want for building Web here!!</em></span>
         </div>
-        <div class="code-viewer">
-          <div class="tabs" ng-show="codeViewing">
-            <span class="html" ng-class="{active: currentTab===0}" ng-click="switchTab(0)" ng-show="htmlCode">HTML</span>
-            <span class="js" ng-class="{active: currentTab===1}" ng-click="switchTab(1)" ng-show="jsCode">JS</span>
-            <span class="css" ng-class="{active: currentTab===2}" ng-click="switchTab(2)" ng-show="cssCode">CSS</span>
-          </div>
-          <div class="code-contents" ng-show="codeViewing">
-            <pre class="language-html" ng-show="htmlCode&&currentTab===0" ng-bind="htmlCode"></pre>
-            <pre class="language-javascript" ng-show="jsCode&&currentTab===1" ng-bind="jsCode"></pre>
-            <pre class="language-css" ng-show="cssCode&&currentTab===2" ng-bind="cssCode"></pre>
+        <div ng-repeat="item in demoList" id="component-{{item.name}}">
+          <div class="">
+            <h3 id="{{item.name}}" class="page-header" ng-bind="item.name"></h3>
+            <div>
+              <iframe id="{{item.name + 'iframe'}}" ng-src="{{'views/' + item.name + '/index.html';}}" iframe-height height="{{item.height}}"></iframe>
+            </div>
+            <br/>
+            <div id="codeview-{{item.name}}" ng-init="viewDemo(item.name)">
+              <h4 class="demo-title">The Source Code</h4>
+              <div class="code-viewer">
+                <div class="tabs">
+                  <span class="html" ng-class="{active: demoMap[item.name].currentTab===0}" ng-click="switchTab(item.name, 0)" ng-show="demoMap[item.name].htmlCode">HTML</span>
+                  <span class="js" ng-class="{active: demoMap[item.name].currentTab===1}" ng-click="switchTab(item.name, 1)" ng-show="demoMap[item.name].jsCode">JS</span>
+                  <span class="css" ng-class="{active: demoMap[item.name].currentTab===2}" ng-click="switchTab(item.name, 2)" ng-show="demoMap[item.name].cssCode">CSS</span>
+                  <span style="float:right;" ng-click="toggleCodeViewer()" title="source code"><i class="view-btn">source</i></span>
+                </div>
+                <div class="code-contents">
+                  <pre class="language-html" ng-show="demoMap[item.name].htmlCode&&demoMap[item.name].currentTab===0" ng-bind="demoMap[item.name].htmlCode"></pre>
+                  <pre class="language-javascript" ng-show="demoMap[item.name].jsCode&&demoMap[item.name].currentTab===1" ng-bind="demoMap[item.name].jsCode"></pre>
+                  <pre class="language-css" ng-show="demoMap[item.name].cssCode&&demoMap[item.name].currentTab===2" ng-bind="demoMap[item.name].cssCode"></pre>
+                </div>
+              </div>.
+            </div>
           </div>
         </div>
-        <iframe ng-src="{{currentUrl}}" ng-hide="codeViewing"></iframe>
       </aside>
     </section>
     <footer></footer>
