@@ -19,5 +19,9 @@ window.demoList = [
   {
     name: 'notify-box',
     height: 'auto'
+  },
+  {
+    name: 'flextable',
+    height: 'auto'
   }
 ];
